@@ -1,0 +1,26 @@
+package com.forthems.ftnlabel.controller;
+
+
+import com.forthems.ftnlabel.model.Ftn;
+import com.forthems.ftnlabel.service.FtnService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+public class FtnController {
+
+    private final FtnService ftnService;
+
+    public FtnController(FtnService ftnService) {
+        this.ftnService = ftnService;
+    }
+
+
+    @GetMapping("/ftn/product")
+    public List<Ftn> findByFtnNo(@RequestParam String word) {
+        return ftnService.findByFtnNo(word);
+    }
+}

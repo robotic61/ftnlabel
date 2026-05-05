@@ -1,0 +1,18 @@
+Database (Shopfloor)
+ ├── Schema: dbo
+ │     ├── Table: FTN
+ │     ├── Table: Orders
+ │
+ ├── Schema: sales
+ │     ├── Table: Customers
+ │     ├── Table: Invoices
+
+
+A schema is like a namespace (or folder) inside a database.
+ Schema = container for tables
+
+
+ Database → Schema → Table
+ Shopfloor → dbo → FTN
+
+ Shopfloor.dbo.FTN
