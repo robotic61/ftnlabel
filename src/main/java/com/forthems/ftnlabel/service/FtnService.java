@@ -11,6 +11,10 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
@@ -33,7 +37,9 @@ public class FtnService {
     }
 
 
-
+    public Ftn findByFtnNo(String word) {
+        return ftnRepository.findByFtnNo(word);
+    }
 
     /*
     Sizing
@@ -50,38 +56,203 @@ public class FtnService {
     4.5 cm = 1.772 x 72 = 127.584f units
     */
 
-//    public PDDocument pdfCreation() throws Exception {
-//        try(PDDocument document = new PDDocument()) {
-//            PDRectangle customSize = new PDRectangle(240.912f, 127.584f);
-//            PDPage page = new PDPage(customSize);
-//            document.addPage(page);
-//            return document;
-//        }
-//    }
+    // create a method that gets the data retrieved from the database
+    // from findByFtnNo method and uses with the ftnLabelCreation() and
+    // generateQRCode method.
 
-    public void pdfTemplate() {
-        try(PDDocument document = new PDDocument()) {
+
+    public void ftnLabelCreation() {
+        try (PDDocument document = new PDDocument()) {
             PDRectangle customSize = new PDRectangle(240.912f, 127.584f);
             PDPage page = new PDPage(customSize);
             document.addPage(page);
 
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                contentStream
+                // Left side of the paper
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(55, 110);
+                contentStream.showText("P/N:");
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 7);
+                contentStream.newLineAtOffset(15, 0);
+                // Placeholder for P/N : Material_No
+                contentStream.showText("10104-0060-01961");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(20, 80); // 20 units away from the left side of the paper
+                contentStream.showText("Desc:");
+                contentStream.newLineAtOffset(20, 0);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 5);
+                contentStream.showText("IC_CHIP_TMP300BIDCKT_TEXAS");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(20, 65); //
+                contentStream.showText("Brand:");
+                contentStream.newLineAtOffset(20, 0);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 6);
+                contentStream.showText("TI");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(20, 55); // -10 units from the lower label
+                contentStream.showText("Maker:");
+                contentStream.newLineAtOffset(20, 0);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 6);
+                contentStream.showText("TMP300BIDCKR");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(20, 45); // -10 units from the lower label
+                contentStream.showText("D/C:");
+                contentStream.newLineAtOffset(20, 0);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 6);
+                contentStream.showText("2140");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(20, 35); // -10 units from the lower label
+                contentStream.showText("L/C:");
+                contentStream.newLineAtOffset(20, 0);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 6);
+                contentStream.showText("TMP300BIDCKR");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(20, 25); // -10 units from the lower label
+                contentStream.showText("Cust.BAT:");
+                contentStream.newLineAtOffset(32, 0);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 6);
+                contentStream.showText("FEMS");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(20, 15); // -10 units from the lower label
+                contentStream.showText("Cust.P/N:");
+                contentStream.newLineAtOffset(32, 0);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 6);
+                contentStream.showText("IC0-TMP300BIDCK");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(180, 110);
+                contentStream.showText("MSL:");
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 7);
+                contentStream.newLineAtOffset(20, 0);
+                // Placeholder for P/N : Material_No
+                contentStream.showText("1");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(70, 45);
+                contentStream.showText("Exp:");
+                contentStream.newLineAtOffset(15, 0);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 6);
+                contentStream.showText("2025-11-08"); // Can I remove 00:00:00.000?
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 7);
+                contentStream.newLineAtOffset(80, 0);
+                contentStream.showText("FTN"); // 2001000026
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 7);
+                contentStream.newLineAtOffset(18, 0);
+                contentStream.showText("2001000026");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(165, 35);
+                contentStream.showText("Batch:");
+                contentStream.newLineAtOffset(21, 0);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.showText("2106170100");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 6);
+                contentStream.newLineAtOffset(150, 25);
+                contentStream.showText("Shelf:");
+                contentStream.newLineAtOffset(18, 0);
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 6);
+                contentStream.showText("1A1P011");
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 5);
+                contentStream.newLineAtOffset(27, 1.5f);
+                contentStream.showText("FOR - Forth");
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 7);
+                contentStream.newLineAtOffset(167, 15);
+                contentStream.showText("Qty:");
+                contentStream.newLineAtOffset(17, 0);
+                contentStream.showText("3000");
+                contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 6);
+                contentStream.newLineAtOffset(28, 2.5f);
+                contentStream.showText("EA");
+                contentStream.endText();
+
+
+                // P/N(Material_No) Qr code
+                BufferedImage qrCodePn = generateQRCode("10104-0060-01961", 164, 164);
+                // QR image pixels should be about 4 times bigger than IMAGE size
+                // so its clear when printing.
+                // here we create an image that is 120 pixels wide x 120 pixels tall
+                // pixel = tiny dots that make up an image.
+                // more pixels = more detail
+
+
+                PDImageXObject qrCodeImagePn = LosslessFactory.createFromImage(document, qrCodePn);
+                // Changes java image into a PDFBox image, since PDFBox cannot directly draw
+                // Buffered Image.
+                // “Lossless” = no quality loss during conversion
+                // We need a document because the image must be created and stored inside a specific PDF document before it can be drawn.
+
+                contentStream.drawImage(qrCodeImagePn, 13.5f, 84.5f, 41, 41);
+                // we draw the qrcode image at (10, 60) is
+                // the bottom-left corner of the image
+                // we create image of width = 40 and height = 40
+                // PDFBox scales the image to fit 40 × 40 points
+
+                // P/N(Material_No) Qr code
+                BufferedImage qrCodeFtn = generateQRCode("2001000026", 164, 164);
+                // QR image pixels should be about 4 times bigger than IMAGE size
+                // so its clear when printing.
+                // here we create an image that is 120 pixels wide x 120 pixels tall
+                // pixel = tiny dots that make up an image.
+                // more pixels = more detail
+
+                PDImageXObject qrCodeImageFtn = LosslessFactory.createFromImage(document, qrCodeFtn);
+                // Changes java image into a PDFBox image, since PDFBox cannot directly draw
+                // Buffered Image.
+                // “Lossless” = no quality loss during conversion
+                // We need a document because the image must be created and stored inside a specific PDF document before it can be drawn.
+
+                // contentStream.newLineAtOffset(183, 55);
+                contentStream.drawImage(qrCodeImageFtn, 176, 50, 41, 41);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
+
+            document.save("ftn_label.pdf");
+            System.out.println("PDF created successfully.");
+            System.out.println(page.getMediaBox().getWidth());
+            System.out.println(page.getMediaBox().getHeight());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    public List<Ftn> findByFtnNo(String word) {
-        return ftnRepository.findByFtnNo(word);
-    }
-
-
-
-
+}
 
     /*
     method to extract labels
@@ -109,13 +280,3 @@ public class FtnService {
    use any font to be nicely readable.
      */
 
-
-
-
-
-
-
-
-
-
-}

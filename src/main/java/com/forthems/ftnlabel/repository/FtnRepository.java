@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface FtnRepository extends JpaRepository<Ftn, String> {
 
-    List<Ftn> findByFtnNo(String word);
+    Ftn findByFtnNo(String word);
 }

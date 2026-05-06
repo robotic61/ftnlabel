@@ -20,7 +20,7 @@ public class FtnController {
 
 
     @GetMapping("/ftn/product")
-    public List<Ftn> findByFtnNo(@RequestParam String word) {
+    public Ftn findByFtnNo(@RequestParam String word) {
         return ftnService.findByFtnNo(word);
     }
 }
