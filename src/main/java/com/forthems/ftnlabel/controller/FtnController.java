@@ -19,8 +19,14 @@ public class FtnController {
     }
 
 
-    @GetMapping("/ftn/product")
+    @GetMapping("/ftn/findbyftn")
     public Ftn findByFtnNo(@RequestParam String word) {
         return ftnService.findByFtnNo(word);
     }
+
+    @GetMapping("/ftn/product")
+    public void ftnLabelCreation(@RequestParam String num) {
+        ftnService.ftnLabelCreation(num);
+    }
+
 }

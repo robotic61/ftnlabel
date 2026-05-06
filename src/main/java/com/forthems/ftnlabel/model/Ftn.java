@@ -61,7 +61,7 @@ public class Ftn {
     // INTEGER default = NULL
 
     @Column(name = "BaseUnit")
-    private String ea;
+    private String baseUnit;
 
     public String getFtnNo() {
         return ftnNo;
@@ -175,12 +175,12 @@ public class Ftn {
         this.qty = qty;
     }
 
-    public String getEa() {
-        return ea;
+    public String getBaseUnit() {
+        return baseUnit;
     }
 
-    public void setEa(String ea) {
-        this.ea = ea;
+    public void setBaseUnit(String baseUnit) {
+        this.baseUnit = baseUnit;
     }
 
     public String getCustPart() {
